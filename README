@@ -44,6 +44,5 @@ kubectl autoscale deployment saas-app --cpu-percent=20 --min=1 --max=5
 kubectl get hpa
 
 
-
-
+For more details, follow setup guide: https://github.com/iamsaryal/do-tam-demo/blob/main/setupGuide.pdf 
 
