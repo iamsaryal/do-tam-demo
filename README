@@ -1,0 +1,49 @@
+# SaaS App Deployment on DigitalOcean Kubernetes
+
+## Prerequisites
+- DigitalOcean account
+- `helm`, `doctl` and `kubectl` configured
+- Docker installed locally
+
+## Steps
+
+1. **Create DOKS Cluster**:
+   ```bash
+eg. doctl kubernetes cluster create saas-cluster --region nyc1 --size s-1vcpu-2gb --count 3
+
+
+2. Build and Push Docker Image:
+
+docker build -t registry.digitalocean.com/your-registry/saas-app:latest ./app
+doctl registry login
+docker push registry.digitalocean.com/your-registry/saas-app:latest
+
+
+3. Deploy Kubernetes Resources:
+ 
+kubectl apply -f kubernetes/deployment.yaml
+kubectl apply -f kubernetes/service.yaml
+kubectl apply -f kubernetes/hpa.yaml
+
+
+4. Verify Deployment
+kubectl get pods,svc,hpa
+
+
+5. Access the Application
+Use the LoadBalancer EXTERNAL-IP from kubectl get svc to access the app.
+
+kubectl get svc
+
+
+6. Install metric server
+refer: https://www.digitalocean.com/community/tutorials/how-to-configure-kubernetes-horizontal-pod-autoscaler-using-metrics-server 
+
+7. Install HPA
+kubectl autoscale deployment saas-app --cpu-percent=20 --min=1 --max=5
+kubectl get hpa
+
+
+
+
+
