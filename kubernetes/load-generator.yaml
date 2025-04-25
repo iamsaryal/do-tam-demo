@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: load-generator-aas-app-lb
+  labels:
+    app: load-generator-aas-app-lb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: load-generator-aas-app-lb
+  template:
+    metadata:
+      name: load-generator-aas-app-lb
+      labels:
+        app: load-generator-aas-app-lb
+    spec:
+      containers:
+      - name: load-generator-aas-app-lb
+        image: busybox
+        command:
+        - /bin/sh
+        - -c
+        - "while true; do wget -q -O- http://saas-app-lb.default.svc.cluster.local; done"
